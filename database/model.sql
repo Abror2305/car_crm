@@ -41,7 +41,13 @@ create table transports(
 drop table if exists permissions cascade;
 create table permissions(
     permission_id int generated always as identity primary key,
-    permission_name character varying(8)
+    permission_name character varying(8) unique
+);
+
+drop table if exists permissions_module cascade;
+create table permissions_module(
+    permission_module_id int generated always as identity primary key,
+    permission_module_name character varying(16) unique
 );
 
 drop table if exists user_permissions cascade;
@@ -50,6 +56,7 @@ create table user_permissions(
     user_id int not null references users(user_id),
     branch_id int not null references branches(branch_id),
     permission_id int not null references permissions(permission_id),
+    permission_module_id int not null references permissions_module(permission_module_id),
     added_from int not null references users(user_id),
     created_at timestamp default current_timestamp,
     deleted_at timestamp null
