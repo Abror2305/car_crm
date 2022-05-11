@@ -1,0 +1,21 @@
+{
+  "name": "car_crm",
+  "version": "0.0.1",
+  "description": "Basic car megezine crm",
+  "main": "index.js",
+  "scripts": {
+    "start": "node /src/index.js",
+    "start:dev": "nodemon -e * /src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abror2305/car_crm.git"
+  },
+  "keywords": [],
+  "author": "Abror Alisherov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Abror2305/car_crm/issues"
+  },
+  "homepage": "https://github.com/Abror2305/car_crm#readme"
+}
