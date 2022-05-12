@@ -2,6 +2,25 @@ import model from "./model.js"
 import {UserInputError,ValidationError,ForbiddenError} from 'apollo-server-express'
 
 export default {
+    Query:{
+        branches: async (_,{branchId,search,sort,sortOption},{token_obj,isAuth}) => {
+            if(!isAuth){
+                return new ValidationError("Token is invalid")
+            }
+            const [perm] = await model.checkHavePerm(token_obj.userId,2)
+            if(!perm){
+                return new ValidationError("You don't have permission to access this data")
+            }
+
+            const branches = await model.getBranches(branchId,search,sort,sortOption)
+            if(!branches){
+                return new ValidationError("Branch not found")
+            }
+            return branches
+        }
+
+    },
+
     Mutation:{
         addBranch: async (_,{branchName,branchAddress},{token_obj,isAuth}) => {
             try {
@@ -101,5 +120,12 @@ export default {
                 return new UserInputError(error.message)
             }
         }
+    },
+    Branches:{
+        branchId: (branch) => branch.branch_id,
+        branchName: (branch) => branch.branch_name,
+        branchAddress: (branch) => branch.branch_address,
+        addedFrom: (branch) => branch.added_from,
+        register_in: (branch) => branch.created_at,
     }
 }

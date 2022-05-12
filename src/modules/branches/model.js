@@ -16,12 +16,15 @@ async function updateBranch(branchId,branchName,branchAddress){
 async function deleteBranch(branchId) {
     return await pg(query.deleteBranch,branchId)
 }
-
+async function getBranches(branchId,search,sort,sortOption){
+    return await pg(query.branches,branchId,search||'',sortOption,sort)
+}
 
 
 export default {
     checkHavePerm,
     addBranch,
     updateBranch,
-    deleteBranch
+    deleteBranch,
+    getBranches
 }

@@ -1,3 +1,20 @@
+type Query{
+    branches(
+        branchId:Int
+        search:String
+        sort:Sort
+        sortOption:SortOption
+    ):[Branches!]!
+}
+
+type Branches{
+    branchId:String!
+    branchName:String!
+    branchAddress:String!
+    addedFrom:Int!
+    register_in:String!
+}
+
 type Mutation{
     addBranch(
         branchName:String! 

@@ -9,6 +9,6 @@ enum SortOption{
     toLargest
 }
 enum Sort{
-    username
+    name
     register_in
 }

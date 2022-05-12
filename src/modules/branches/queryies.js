@@ -45,6 +45,47 @@ where deleted_at is null and branch_id=$1
 returning *
 `
 
+const branches = `
+select 
+    branch_id,
+    branch_name,
+    branch_address,
+    added_from,
+    created_at
+from
+    branches
+where (case
+	when $1::bool is not null then branch_id=$1::int
+    else (deleted_at is null ) and ((branch_name ilike '%'|| $2::varchar || '%') or 
+    (branch_address ilike '%'|| $2::varchar || '%'))
+    end)
+order by
+    (
+        case
+        when $4::varchar = 'name'
+        and $3::varchar = 'toLargest' then branch_name
+        end
+    ) asc,
+    (
+        case
+        when $4::varchar = 'name'
+        and $3::varchar = 'toSmallest' then branch_name
+        end
+    )desc,
+    (
+        case
+        when $4::varchar = 'register_in'
+        and $3::varchar = 'toLargest' then created_at
+        end
+    )asc,
+    (
+        case
+        when $4::varchar = 'register_in'
+        and $3::varchar = 'toSmallest' then created_at
+        end
+    )desc
+`
+
 const deleteBranch = `
 update
     branches
@@ -58,5 +99,6 @@ export default {
     checkHavePerm,
     addBranch,
     updateBranch,
-    deleteBranch
+    deleteBranch,
+    branches
 }

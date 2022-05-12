@@ -49,13 +49,13 @@ where (case
 order by
     (
         case
-        when $4::varchar = 'username'
+        when $4::varchar = 'name'
         and $3::varchar = 'toLargest' then user_name
         end
     ) asc,
     (
         case
-        when $4::varchar = 'username'
+        when $4::varchar = 'name'
         and $3::varchar = 'toSmallest' then user_name
         end
     )desc,
@@ -68,7 +68,7 @@ order by
     (
         case
         when $4::varchar = 'register_in'
-        and $3::varchar = 'toSmallest' then user_name
+        and $3::varchar = 'toSmallest' then created_at
         end
     )desc
 `
