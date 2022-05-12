@@ -38,7 +38,6 @@ export default {
 
 
         deletePermission: async(_,{up_id},{token_obj,isAuth}) => {
-            console.log(token_obj);
             if(!isAuth){
                 return new ValidationError("Token is invalid")
             }
@@ -52,7 +51,7 @@ export default {
                 }
             }
             
-            const [perm] = await model.checkPerm(token_obj.userId,branch.branch_id,4)
+            const [perm] = await model.checkPerm(token_obj.userId,branch.branch_id,3)
             if(!perm){
                 return new ForbiddenError("You have not accses to deletePermission")
             }

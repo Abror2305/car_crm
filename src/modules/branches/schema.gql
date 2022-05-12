@@ -1,25 +1,16 @@
 type Mutation{
-    addPermission(
-        userId: Int!,
-        branchId: Int!,
-        permissionModule: PermissionModule!,
-        permission: Permission!
+    addBranch(
+        branchName:String! 
+        branchAddress:String!
     ): MutationResponse!
-    
-    deletePermission(
-        up_id:Int!
+
+    updateBranch(
+        branchId:Int!
+        branchName:String
+        branchAddress:String
     ): MutationResponse!
-}
 
-enum PermissionModule{
-    Transports,
-    Branches,
-    Permissions
-}
-
-enum Permission{
-    Create,
-    Read,
-    Write,
-    Delete
+    deleteBranch(
+        branchId:Int!
+    ): MutationResponse!
 }
