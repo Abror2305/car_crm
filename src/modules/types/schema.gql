@@ -2,3 +2,4 @@ type MutationResponse{
     status:Int!
     message:String!
 }
+scalar Upload

@@ -9,9 +9,11 @@ import '#config/index'
 import jwt from 'jsonwebtoken'
 import schema from './modules/index.js'
 import {secret_key} from '#config/index'
+import {graphqlUploadExpress} from 'graphql-upload'
 !async function () {
     const app = express()
     const httpServer = http.createServer(app)
+
 
     const server = new ApolloServer({
         schema,
@@ -34,6 +36,7 @@ import {secret_key} from '#config/index'
             return {token_obj,userAgent,isAuth}
         },
 
+
         csrfPrevention: true,
         introspection: true,
         plugins: [
@@ -41,6 +44,8 @@ import {secret_key} from '#config/index'
             ApolloServerPluginLandingPageGraphQLPlayground()
         ],
     })
+
+    app.use(graphqlUploadExpress({ maxFileSize: 10485760}))
 
     await server.start()
     server.applyMiddleware({ app })

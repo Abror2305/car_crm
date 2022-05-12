@@ -1,0 +1,10 @@
+type Mutation{
+    addTransport(
+        # transportName:String!
+        transportImg:Upload!
+        # branchId: Int!
+        # transportColor: String!
+    ):MutationResponse!
+    # changeTransport
+    # deleteTransport
+}
