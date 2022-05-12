@@ -5,8 +5,6 @@ async function checkPerm(userId,branchId,permissionId){
     return await pg(query.checkHavePerm,userId,branchId,permissionId)
 }
 
-
-
 export default {
     checkPerm,
 

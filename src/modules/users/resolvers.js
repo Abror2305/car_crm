@@ -2,14 +2,45 @@ import model from "./model.js"
 import jwt from 'jsonwebtoken';
 import {secret_key,expiresIn} from '#config/index';
 import {registerSchema} from '../../util/validation.js'
-import {UserInputError} from 'apollo-server-express'
+import {UserInputError,ValidationError} from 'apollo-server-express'
 export default {
     gender:{
         male:1,
         female:2
     },
+    User: {
+        userId: global => global.user_id,
+        username: global => global.user_name,
+        birthDate: global => global.bith_date,
+        gender: global => global.gender===1? "Male":"Female",
+        register_in: global => global.created_at
+    },
     Query:{
-        user: () => 'user'
+        user:async (_,__,{token_obj,isAuth}) => {
+            if(!isAuth){
+                return new ValidationError("Token is invalid")
+            }
+
+            const [user] = await model.getUser(token_obj.userId)
+            if(!user){
+                return new ValidationError("User not found")
+            }
+            return user
+        },
+        users:async (_,{userId,search,sort,sortOption},{token_obj,isAuth}) => {
+            if(!isAuth){
+                return new ValidationError("Token is invalid")
+            }
+            const [perm] = await model.havePerm(token_obj.userId)
+            if(!perm){
+                return new ValidationError("You don't have permission to access this data")
+            }
+            const users = await model.getUsers(userId,search,sort,sortOption)
+            if(!users){
+                return new ValidationError("User not found")
+            }
+            return users
+        }
     },
     Mutation:{
         login:async (_,{input:{username,password}},{userAgent}) => {

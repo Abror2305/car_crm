@@ -9,8 +9,8 @@ export default {
     Permission:{
         Create:1,
         Read:2,
-        Write:3,
-        Delete:4
+        Delete:3,
+        Update:4,
     },
     Mutation: {
         addPermission: async(_,{userId, branchId, permissionModule, permission},{token_obj,userAgent,isAuth}) => {

@@ -1,5 +1,19 @@
 type Query{
-    user: String!
+    user:User!
+    users(
+        userId:Int
+        search:String
+        sort:Sort
+        sortOption:SortOption
+    ):[User!]!
+}
+
+type User{
+    userId:Int!
+    username: String!
+    birthDate: String
+    gender:String!
+    register_in: String!
 }
 
 type Mutation{

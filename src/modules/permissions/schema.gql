@@ -20,6 +20,6 @@ enum PermissionModule{
 enum Permission{
     Create,
     Read,
-    Write,
+    Update,
     Delete
 }

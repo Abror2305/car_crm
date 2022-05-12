@@ -9,7 +9,7 @@ async function selectBranch(up_id){
     return await pg(query.selectBranch,up_id)
 }
 
-async function addPerm(userId,branchId,permissionModule,permission,addedFrom){
+async function addPerm(userId,branchId,permission,permissionModule,addedFrom){
     return await pg(query.addPerm,userId,branchId,permission,permissionModule,addedFrom)
 }
 

@@ -3,3 +3,12 @@ type MutationResponse{
     message:String!
 }
 scalar Upload
+
+enum SortOption{
+    toSmallest
+    toLargest
+}
+enum Sort{
+    username
+    register_in
+}
