@@ -1,9 +1,9 @@
 insert into users( user_name, password, gender) values 
-('admin','admin',1),
-('Abror','Abror1234',1),
-('Maxliyo','Maxliyo123',2),
-('Maftuna','Maftuna123',2),
-('Asad','Asad1234',1);
+('admin',crypt('admin',gen_salt('bf')),1),
+('Abror',crypt('Abror123',gen_salt('bf')),1),
+('Maxliyo',crypt('Maxliyo123',gen_salt('bf')),2),
+('Maftuna',crypt('Maftuna123',gen_salt('bf')),2),
+('Asad',crypt('Asad123',gen_salt('bf')),1);
 
 insert into branches(
     branch_name,

@@ -14,6 +14,11 @@ import schema from './modules/index.js'
     const httpServer = http.createServer(app)
     const server = new ApolloServer({
         schema,
+        context: ({req}) => {
+            const userAgent = req.get("user-agent")
+            const token = req.get('token')
+            return {token,userAgent}
+        },
         csrfPrevention: true,
         introspection: true,
         plugins: [

@@ -5,12 +5,13 @@ create database car_crm;
 
 \c car_crm
 
+create extension pgcrypto;
 drop table if exists users cascade;
 create table users(
     user_id int generated always as identity primary key,
     user_name character varying(16) not null,
-    password character varying(64),
-    birth_date timestamp null,
+    password character varying(60),
+    birth_date date null,
     gender smallint not null,
     created_at timestamp default current_timestamp,
     deleted_at timestamp null
