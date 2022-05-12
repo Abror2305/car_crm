@@ -1,1 +1,4 @@
-union GlobalType = token:String
+type MutationResponse{
+    status:Int!
+    message:String!
+}
