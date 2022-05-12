@@ -2,10 +2,11 @@
   "name": "car_crm",
   "version": "0.0.1",
   "description": "Basic car megezine crm",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "start": "node /src/index.js",
-    "start:dev": "nodemon -e * /src/index.js"
+    "start": "node src/server.js",
+    "start:dev": "nodemon -e * src/server.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,14 @@
   "bugs": {
     "url": "https://github.com/Abror2305/car_crm/issues"
   },
-  "homepage": "https://github.com/Abror2305/car_crm#readme"
+  "homepage": "https://github.com/Abror2305/car_crm#readme",
+  "imports": {
+    "#config/*": "./src/config/*.js"
+  },
+  "dependencies": {
+    "apollo-server-core": "^3.7.0",
+    "apollo-server-express": "^3.7.0",
+    "dotenv": "^16.0.1",
+    "joi": "^17.6.0"
+  }
 }
