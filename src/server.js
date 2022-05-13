@@ -10,11 +10,13 @@ import jwt from 'jsonwebtoken'
 import schema from './modules/index.js'
 import {secret_key} from '#config/index'
 import {graphqlUploadExpress} from 'graphql-upload'
+import cors from "cors"
+
 !async function () {
     const app = express()
     const httpServer = http.createServer(app)
     app.use(express.static(process.cwd()+'/src/'+"img"))
-
+    app.use(cors())
     const server = new ApolloServer({
         schema,
         context: ({req}) => {
@@ -37,7 +39,7 @@ import {graphqlUploadExpress} from 'graphql-upload'
         },
 
 
-        csrfPrevention: true,
+        csrfPrevention: false,
         introspection: true,
         plugins: [
             ApolloServerPluginDrainHttpServer({ httpServer }),

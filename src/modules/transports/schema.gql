@@ -24,7 +24,7 @@ type Mutation{
         transportColor: String!
     ):MutationResponse!
     updateTransport(
-        transportId:Int
+        transportId:Int!
         transportName:String
         transportImg:Upload
         branchId: Int

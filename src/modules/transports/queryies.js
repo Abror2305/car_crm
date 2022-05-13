@@ -50,13 +50,14 @@ set
     end
     ),
     branch_id = (case
-        when length($5::int)>0 then $5::int
+        when length($5::varchar) is not null then $5::int
         else branch_id
     end
     )
 where
     transport_id=$1::int and 
-    deleted_at is null
+    deleted_at is null and
+    branch_id in (select branch_id from user_permissions where user_id=$6::int and permission_id=4 and permission_module_id=1 and deleted_at is null)
 returning *
 `
 

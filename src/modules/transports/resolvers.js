@@ -2,7 +2,7 @@ import model from "./model.js"
 import {ValidationError,ForbiddenError} from 'apollo-server-express'
 import {finished} from "stream/promises"
 import fs from 'fs'
-
+import path from "path"
 export default {
     Transports: {
         transportId: global => global.transport_id,
@@ -34,7 +34,6 @@ export default {
                 return new ForbiddenError("You have not accses to addTransport")
             }
             const {createReadStream, filename, mimetype} = await transportImg
-            console.log(filename,mimetype);
 
             if (!['image/png', 'image/jpg', 'image/jpeg'].includes(mimetype)) {
                 return {
@@ -44,11 +43,10 @@ export default {
             }
 
             const fileName = Date.now() + filename.replace(/\s/g, '')
-            const out = fs.createWriteStream(path.join(process.cwd(), 'uploads', fileName))
+            const out = fs.createWriteStream(path.join(process.cwd(), 'src','img', fileName))
             createReadStream().pipe(out)
             await finished(out)
             
-            console.log(fileName)
             const transport = await model.addTransport(token_obj.userId,branchId,transportName,fileName,transportColor)
             return {
                 status: 200,
@@ -56,17 +54,16 @@ export default {
             }
 
         },
-        updateTransport: async (_,{transportName,transportImg,branchId,transportColor},{token_obj,isAuth}) => {
+        updateTransport: async (_,{transportId,transportName,transportImg,branchId,transportColor},{token_obj,isAuth}) => {
             if(!isAuth){
                 return new ValidationError("Token is invalid")
             }
-            const [perm] = await model.checkPerm(token_obj.userId,branchId,4)
-            if(!perm){
-                return new ForbiddenError("You have not accses to addTransport")
-            }
-            const {createReadStream, filename, mimetype} = await transportImg
-
-            if(filename){
+            const file = await transportImg
+            let createReadStream, filename, mimetype;
+            if(file){
+                createReadStream = file.createReadStream
+                filename = file.filename
+                mimetype = file.mimetype
                 if (!['image/png', 'image/jpg', 'image/jpeg'].includes(mimetype)) {
                     return {
                         status: 400,
@@ -75,12 +72,12 @@ export default {
                 }
     
                 const fileName = Date.now() + filename.replace(/\s/g, '')
-                const out = fs.createWriteStream(path.join(process.cwd(), 'uploads', fileName))
+                const out = fs.createWriteStream(path.join(process.cwd(), 'src','img', fileName))
                 createReadStream().pipe(out)
                 await finished(out)
             }
 
-            const transport = await model.updateTransport(token_obj.userId,branchId,transportName,fileName,transportColor)
+            const transport = await model.updateTransport(transportId,branchId,transportName,filename,transportColor,token_obj.userId)
             if(transport.length === 0){
                 return new ValidationError('No transports found or you do not have permission to view them')
             }
