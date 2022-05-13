@@ -16,10 +16,18 @@ async function addPerm(userId,branchId,permission,permissionModule,addedFrom){
 async function delPerm(up_id){
     return await pg(query.delPerm,up_id)
 }
+async function myPermissions(userId){
+    return await pg(query.myPermissions,userId)
+}
+async function allPermissions(userId, s_userId,branchId, userName,branchName,sort,sortOption){
+    return await pg(query.allPermissions,userId,s_userId||0,branchId||0, branchName|| '', userName|| '',sort,sortOption)
+}
 
 export default {
     checkPerm,
     addPerm,
     selectBranch,
-    delPerm
+    delPerm,
+    myPermissions,
+    allPermissions
 }

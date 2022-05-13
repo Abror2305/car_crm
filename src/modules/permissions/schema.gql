@@ -1,9 +1,41 @@
+type Query{
+    myPermisions:[Permission!]!
+    allPermissions(
+        userId:Int
+        branchId:Int
+        branchName:String
+        userName:String
+        sort:SortPerm
+        sortOption:SortOption
+    ): [Permission!]!
+}
+
+enum SortPerm{
+    userName
+    branchName
+    createdAt
+}
+
+
+type Permission{
+    upId:Int!
+    branchId:Int!
+    branchName:String!
+    userId:Int!
+    userName:String!
+    permission:String!
+    permissionModule:String!
+    addedFromId:Int!
+    addedFromName:String!
+    createdAt:String!
+}
+
 type Mutation{
     addPermission(
         userId: Int!,
         branchId: Int!,
         permissionModule: PermissionModule!,
-        permission: Permission!
+        permission: PermissionEnum!
     ): MutationResponse!
     
     deletePermission(
@@ -17,7 +49,7 @@ enum PermissionModule{
     Permissions
 }
 
-enum Permission{
+enum PermissionEnum{
     Create,
     Read,
     Update,
