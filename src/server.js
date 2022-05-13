@@ -13,7 +13,7 @@ import {graphqlUploadExpress} from 'graphql-upload'
 !async function () {
     const app = express()
     const httpServer = http.createServer(app)
-
+    app.use(express.static(process.cwd()+'/src/'+"img"))
 
     const server = new ApolloServer({
         schema,

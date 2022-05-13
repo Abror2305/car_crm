@@ -1,10 +1,36 @@
+type Query{
+    transports(
+        branchId:Int
+        search:String
+        sort:Sort
+        sortOption:SortOption
+    ):[Transports!]!
+}
+type Transports{
+    transportId:Int!
+    transportName:String!
+    transportColor:String!
+    transportImg:String!
+    branchId:Int!
+    addedFrom:Int!
+    createdAt:String!
+}
+
 type Mutation{
     addTransport(
-        # transportName:String!
+        transportName:String!
         transportImg:Upload!
-        # branchId: Int!
-        # transportColor: String!
+        branchId: Int!
+        transportColor: String!
     ):MutationResponse!
-    # changeTransport
-    # deleteTransport
+    updateTransport(
+        transportId:Int
+        transportName:String
+        transportImg:Upload
+        branchId: Int
+        transportColor: String
+    ):MutationResponse!
+    deleteTransport(
+        transportId:Int!
+    ):MutationResponse!
 }

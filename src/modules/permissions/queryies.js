@@ -83,6 +83,7 @@ where
       user_id = $1::int
       and permission_id = 2
       and permission_module_id = 3
+      and deleted_at is null
   )
   and (
     case

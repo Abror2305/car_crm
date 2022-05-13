@@ -14,18 +14,18 @@ where
 const addTransport = `
 insert into
     transports(
+        added_from,
+        branch_id,
         transport_name,
         transport_img,
-        branch_id,
-        transport_color,
-        added_from
+        transport_color
     )
 values(
-    $1::varchar,
-    $2::varchar,
-    $3::int,
+    $1::int,
+    $2::int,
+    $3::varchar,
     $4::varchar,
-    $5::int
+    $5::varchar
 )
 returning *
 `
@@ -55,7 +55,8 @@ set
     end
     )
 where
-    transport_id=$1::int
+    transport_id=$1::int and 
+    deleted_at is null
 returning *
 `
 
@@ -66,12 +67,74 @@ set
     deleted_at = current_timestamp
 where
     transport_id=$1::int
+    and deleted_at is null and
+    branch_id in (select branch_id from user_permissions where user_id=$2::int and permission_id=3 and permission_module_id=1 and deleted_at is null)
 returning *
+`
+
+const getTransports = `
+select
+  transport_id,
+  transport_name,
+  transport_img,
+  transport_color,
+  branch_id,
+  added_from,
+  created_at
+from
+  transports
+where
+  branch_id in (
+    select
+      branch_id
+    from
+      user_permissions
+    where
+      user_id = $1::int
+      and permission_id = 2
+      and permission_module_id = 1
+      and deleted_at is null
+  )and 
+  ((transport_name ilike '%'|| $3::varchar || '%') or 
+    (transport_color ilike '%'|| $3::varchar || '%'))
+  and (
+    case
+      when $2::bool then branch_id=$2::int
+      else true
+    end
+    )
+    and deleted_at is null
+order by
+(
+    case
+    when $4::varchar = 'name'
+    and $5::varchar = 'toLargest' then transport_name
+    end
+) asc,
+(
+    case
+    when $4::varchar = 'name'
+    and $5::varchar = 'toSmallest' then transport_name
+    end
+) desc,
+(
+    case
+    when $4::varchar = 'register_in'
+    and $5::varchar = 'toLargest' then created_at
+    end
+) asc,
+(
+    case
+    when $4::varchar = 'register_in'
+    and $5::varchar = 'toSmallest' then created_at
+    end
+) desc
 `
 
 export default {
     checkHavePerm,
     addTransport,
     updateTransport,
-    deleteTransport
+    deleteTransport,
+    getTransports
 }
