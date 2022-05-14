@@ -22,6 +22,19 @@ const selectBranch = `
     select branch_id from user_permissions where up_id = $1::int and deleted_at is null
 `
 
+const check_exists = `
+select 
+    user_id
+from
+    user_permissions
+where
+    user_id=$1::int and
+    branch_id=$2::int and
+    permission_id=$3::int and
+    permission_module_id=$4::int and
+    deleted_at is null
+`
+
 const delPerm = `
 update user_permissions set deleted_at=current_timestamp
 where 
@@ -145,5 +158,6 @@ export default {
     selectBranch,
     delPerm,
     myPermissions,
-    allPermissions
+    allPermissions,
+    check_exists
 }

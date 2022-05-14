@@ -50,7 +50,10 @@ export default {
             if(!perm){
                 return new ForbiddenError("You have not accses to addPermission")
             }
-            
+            const [check_exists] = await model.check_exists(userId,branchId,permission,permissionModule)
+            if(check_exists){
+                return new ForbiddenError("Permission already exists")
+            } 
             const [addPerm] = await  model.addPerm(userId,branchId,permission,permissionModule,perm.user_id)
             if(!addPerm){
                 return {

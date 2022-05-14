@@ -22,12 +22,15 @@ async function myPermissions(userId){
 async function allPermissions(userId, s_userId,branchId, userName,branchName,sort,sortOption){
     return await pg(query.allPermissions,userId,s_userId||0,branchId||0, branchName|| '', userName|| '',sort,sortOption)
 }
-
+async function check_exists(userId,branchId,permissionId,permissionModule){
+    return await pg(query.check_exists,userId,branchId,permissionId,permissionModule)
+}
 export default {
     checkPerm,
     addPerm,
     selectBranch,
     delPerm,
     myPermissions,
-    allPermissions
+    allPermissions,
+    check_exists
 }
