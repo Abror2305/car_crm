@@ -87,12 +87,12 @@ where
   )
   and (
     case
-      when $3::bool then up.branch_id = $3::int
+      when length($3::varchar)>0 then up.branch_id = $3::int
       else true
     end
   )and (
     case
-      when $2::bool then up.user_id = $2::int
+      when length($2::varchar)>0 then up.user_id = $2::int
       else true
     end
   ) and

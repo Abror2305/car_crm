@@ -31,13 +31,13 @@ update
 set 
 branch_name = (
     case
-        when length($2) > 0 then $2
+        when length($2::varchar) > 0 then $2::varchar
         else branch_name
     end
     ),
 branch_address = (
     case
-        when length($3) > 0 then $3
+        when length($3::varchar) > 0 then $3::varchar
         else branch_address
     end
 )
@@ -55,7 +55,7 @@ select
 from
     branches
 where (case
-	when $1::bool is not null then branch_id=$1::int
+	when length($1::varchar)>0 is not null then branch_id=$1::int
     else (deleted_at is null ) and ((branch_name ilike '%'|| $2::varchar || '%') or 
     (branch_address ilike '%'|| $2::varchar || '%'))
     end)

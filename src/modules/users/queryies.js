@@ -43,7 +43,7 @@ select
 from
     users
 where (case
-	when $1::bool is not null then user_id=$1::int
+	when length($1::varchar)>0 is not null then user_id=$1::int
     else (deleted_at is null ) and (user_name ilike '%'|| $2::varchar || '%')
     end)
 order by

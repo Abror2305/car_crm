@@ -100,7 +100,7 @@ where
     (transport_color ilike '%'|| $3::varchar || '%'))
   and (
     case
-      when $2::bool then branch_id=$2::int
+      when length($2::varchar)>0 then branch_id=$2::int
       else true
     end
     )

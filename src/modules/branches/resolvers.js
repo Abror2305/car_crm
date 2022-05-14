@@ -64,13 +64,13 @@ export default {
                     return new ValidationError("Token is invalid")
                 }
 
-                branchName = branchName.trim()
-                branchAddress = branchAddress.trim()
+                branchName = branchName?.trim()
+                branchAddress = branchAddress?.trim()
     
-                if(branchName.length < 3 || branchName.length > 32){
+                if(branchName && (branchName.length < 3 || branchName.length > 32)){
                     return new UserInputError("Branch name must be between 3 and 32 characters")
                 }
-                if(branchAddress.length < 3 || branchAddress.length > 256){
+                if(branchAddress &&( branchAddress.length < 3 || branchAddress.length > 256)){
                     return new UserInputError("Branch address must be between 3 and 256 characters")
                 }
 
