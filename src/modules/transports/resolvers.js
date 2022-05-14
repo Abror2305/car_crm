@@ -1,5 +1,5 @@
 import model from "./model.js"
-import {ValidationError,ForbiddenError} from 'apollo-server-express'
+import {ValidationError,ForbiddenError,UserInputError} from 'apollo-server-express'
 import {finished} from "stream/promises"
 import fs from 'fs'
 import path from "path"
@@ -34,6 +34,13 @@ export default {
                 return new ForbiddenError("You have not accses to addTransport")
             }
             const {createReadStream, filename, mimetype} = await transportImg
+
+            if(transportName.length < 3 || transportName.length > 32){
+                return new UserInputError("Transport name must be between 3 and 32 characters")
+            }
+            if(transportColor.length < 2 || transportColor.length > 16){
+                return new UserInputError("Transport color must be between 2 and 16 characters")
+            }
 
             if (!['image/png', 'image/jpg', 'image/jpeg'].includes(mimetype)) {
                 return {
